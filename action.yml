@@ -1,0 +1,16 @@
+name: Lunaria
+description: A GitHub Action to overview a pull request's status changes with Lunaria
+author: Yan Thomas
+
+runs:
+  using: node20
+  main: dist/index.mjs
+
+inputs:
+  token:
+    description: The GitHub token to be used, either the injected GitHub GITHUB_TOKEN secret by default, or a PAT (personal access token)
+    default: ${{ github.token }}
+
+branding:
+  icon: moon
+  color: purple

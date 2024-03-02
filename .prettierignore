@@ -1,0 +1,12 @@
+# deep directories
+**/node_modules
+
+# generated directories
+**/dist
+**/__coverage__
+
+# directories
+.changeset
+
+# files
+pnpm-lock.yaml

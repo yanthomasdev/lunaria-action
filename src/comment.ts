@@ -94,23 +94,11 @@ export async function findExistingCommentId(
 	octokit: Octokit,
 	issue: { repo: string; owner: string; issue_number: number }
 ) {
-	return (
-		await octokit.paginate(
-			octokit.rest.issues.listComments,
-			{
-				...issue,
-				per_page: 100,
-			},
-			(response, done) => {
-				// Stop paginating when the existing Lunaria bot comment is found.
-				if (response.data.find((comment) => comment.body?.includes(pragma))) {
-					done();
-					return response.data;
-				}
-				return [];
-			}
-		)
-	)
-		.flat()
-		.at(0)?.id;
+	const comments = await octokit.paginate(octokit.rest.issues.listComments, {
+		...issue,
+		per_page: 100,
+	});
+
+	const commentWithPragma = comments?.find((comment) => comment.body?.includes(pragma));
+	return commentWithPragma?.id;
 }

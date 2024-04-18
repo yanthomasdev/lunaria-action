@@ -188,7 +188,7 @@ async function main() {
 		return;
 	}
 
-	const githubToken = core.getInput('token', { required: true });
+	const githubToken = core.getInput('token');
 	const octokit = github.getOctokit(githubToken);
 
 	const { config, status } = await getLunariaContext();

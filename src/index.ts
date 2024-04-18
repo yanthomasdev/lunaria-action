@@ -24,6 +24,23 @@ import {
 import type { Files, PullRequest } from './types.js';
 
 /**
+ * Sets the current working directory to the one specified by the `working-directory` input.
+ * Necessary to allow for monorepo support.
+ */
+function setWorkingDirectory(workingDirectory?: string) {
+	if (workingDirectory) {
+		try {
+			process.chdir(workingDirectory);
+		} catch {
+			core.setFailed(
+				`Failed to change working directory to ${workingDirectory}. Is the path correct?`
+			);
+			process.exit(1);
+		}
+	}
+}
+
+/**
  * Finds the corresponding Lunaria config's `file` object for a determined filename.
  */
 function findFileConfig(filename: string, files: LunariaUserConfig['files']) {
@@ -190,6 +207,9 @@ async function main() {
 
 	const githubToken = core.getInput('token');
 	const octokit = github.getOctokit(githubToken);
+
+	const workingDirectory = core.getInput('working-directory');
+	setWorkingDirectory(workingDirectory);
 
 	const { config, status } = await getLunariaContext();
 

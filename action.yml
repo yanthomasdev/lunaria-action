@@ -9,6 +9,7 @@ runs:
 inputs:
   token:
     description: The GitHub token to be used, either the injected GitHub GITHUB_TOKEN secret by default, or a PAT (personal access token)
+    required: false
     default: ${{ github.token }}
 
 branding:

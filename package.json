@@ -1,7 +1,7 @@
 {
   "name": "@lunariajs/action",
   "type": "module",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": "true",
   "description": "Lunaria GitHub Action",
   "module": "./dist/index.mjs",

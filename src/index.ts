@@ -85,14 +85,19 @@ function unrootFilename(root: string, filename: string) {
 function getStatusOverview(title: string, ignoreKeywords: string[]) {
 	const IGNORE_KEYWORDS = new RegExp(`(${ignoreKeywords.join('|')})`, 'i');
 	const match = title.match(IGNORE_KEYWORDS)?.at(0);
-	return match ? overviewUntracked(match) : overviewTracked;
+
+	return {
+		overview: match ? overviewUntracked(match) : overviewTracked,
+		isIgnored: !!match,
+	};
 }
 
 async function getTrackedFilesTable(
 	pullRequest: PullRequest,
 	trackedFiles: Files,
 	config: LunariaUserConfig,
-	status: LocalizationStatus[]
+	status: LocalizationStatus[],
+	isIgnored: boolean
 ) {
 	const { defaultLocale, locales, files, repository, dashboard } = config;
 	const rows: string[][] = [];
@@ -150,7 +155,7 @@ async function getTrackedFilesTable(
 		...Object.values(warnings).map(({ icon, description }) => [icon, description]),
 	]);
 
-	return trackedFilesDetails(filesTable, warningsTable);
+	return trackedFilesDetails(filesTable, warningsTable, isIgnored);
 }
 
 async function getLunariaContext() {
@@ -235,12 +240,18 @@ async function main() {
 	);
 
 	if (!trackedFiles.length) {
-		core.notice("This pull request doesn't include any tracked files");
+		core.notice("This pull request doesn't include any tracked files.");
 		return;
 	}
 
-	const overview = getStatusOverview(pullRequest.title, config.ignoreKeywords);
-	const trackedFilesTable = await getTrackedFilesTable(pullRequest, trackedFiles, config, status);
+	const { overview, isIgnored } = getStatusOverview(pullRequest.title, config.ignoreKeywords);
+	const trackedFilesTable = await getTrackedFilesTable(
+		pullRequest,
+		trackedFiles,
+		config,
+		status,
+		isIgnored
+	);
 
 	await commentSummary(octokit, pullRequestContext, body(overview, trackedFilesTable));
 }

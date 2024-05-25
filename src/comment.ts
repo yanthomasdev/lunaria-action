@@ -29,7 +29,18 @@ Lunaria automatically ignores changes on specific PRs by adding a ignored keywor
 You can change this by either removing the keyword above from the PR's title, or modifying the [\`ignoreKeywords\` property in your Lunaria configuration file](https://lunaria.dev/reference/configuration/#ignorekeywords).
 </details>`;
 
-export const trackedFilesDetails = (filesTable: string, warningsTable: string) => `
+export const tableIgnoredWarning = `
+> [!NOTE]  
+> The notes below indicate what would happen if the pull request is merged when triggering status changes. Since a ignored keyword was found in the PR's title, the status changes indicated below won't be applied.
+`;
+
+export const trackedFilesDetails = (
+	filesTable: string,
+	warningsTable: string,
+	isIgnored: boolean
+) => `
+${isIgnored ? tableIgnoredWarning : ''}
+
 ${filesTable}
 
 <details>

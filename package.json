@@ -1,7 +1,7 @@
 {
   "name": "@lunariajs/action",
   "type": "module",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": "true",
   "description": "Lunaria GitHub Action",
   "module": "./dist/index.mjs",
@@ -29,11 +29,11 @@
   "devDependencies": {
     "@actions/core": "^1.10.1",
     "@actions/github": "^6.0.0",
+    "@lunariajs/core": "^0.1.0",
     "execa": "^8.0.1",
     "markdown-table": "^3.0.3",
     "micromatch": "^4.0.5",
     "resolve-package-path": "^4.0.3",
-    "@lunariajs/core": "^0.0.32",
     "zod": "^3.22.4"
   },
   "dependencies": {
